@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Viraly — AI UGC Video Marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2ee;
+    --cream: #f0ebe3;
+    --accent: #ff4c1f;
+    --accent2: #ff8c42;
+    --mid: #1e1c1a;
+    --muted: #6b6560;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: #131210;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 5%;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; align-items: center; gap: 2rem; }
+  .nav-links a {
+    color: var(--muted); font-size: 0.875rem; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--accent);
+    color: #fff !important;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-weight: 500;
+    font-size: 0.875rem !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    padding: 10rem 5% 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(255,76,31,0.12) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 80% at 85% 10%, rgba(255,140,66,0.08) 0%, transparent 60%);
+  }
+
+  /* Animated grid lines */
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridScroll 20s linear infinite;
+  }
+  @keyframes gridScroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 60px 60px; }
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,76,31,0.12);
+    border: 0.5px solid rgba(255,76,31,0.3);
+    color: var(--accent2);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+  }
+  .badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.75rem;
+  }
+  h1 em {
+    font-style: normal;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--accent);
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: #a09a93;
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: none; cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent;
+    color: var(--white);
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-decoration: none;
+    border: 0.5px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.04); }
+
+  /* LOGOS */
+  .logos {
+    padding: 3rem 5%;
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .logos-label {
+    text-align: center;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+  .logos-row {
+    display: flex; justify-content: center; align-items: center;
+    flex-wrap: wrap; gap: 3rem 4rem;
+  }
+  .logo-item {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: -0.02em;
+  }
+
+  /* STATS */
+  .stats {
+    padding: 6rem 5%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0;
+  }
+  .stat {
+    padding: 2.5rem;
+    border-right: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--white);
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-weight: 300;
+  }
+
+  /* HOW IT WORKS */
+  .section { padding: 8rem 5%; }
+  .section-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.25rem;
+  }
+  .section-sub {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 4rem;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .step {
+    background: var(--card-bg);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .step:hover { background: #1a1815; }
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
+    color: rgba(255,76,31,0.12);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.05em;
+  }
+  .step-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(255,76,31,0.1);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.25rem;
+    font-size: 20px;
+  }
+  .step h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.02em;
+  }
+  .step p {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--border);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .feature {
+    background: var(--card-bg);
+    padding: 2.5rem 2rem;
+    transition: background 0.3s;
+  }
+  .feature:hover { background: #1a1815; }
+  .feature-icon {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+  .feature h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.02em;
+  }
+  .feature p {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .feature.featured {
+    grid-column: span 2;
+    background: linear-gradient(135deg, #1a0c07 0%, #13100e 100%);
+    border: none;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    min-height: 260px;
+    position: relative;
+    overflow: hidden;
+    padding: 3rem;
+  }
+  .feature.featured::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 70% at 80% 50%, rgba(255,76,31,0.15) 0%, transparent 70%);
+  }
+  .feature.featured * { position: relative; z-index: 1; }
+  .feature.featured h3 {
+    font-size: 1.5rem;
+    max-width: 420px;
+  }
+  .feature.featured p { max-width: 400px; }
+
+  /* TESTIMONIALS */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .testimonial {
+    background: var(--card-bg);
+    padding: 2rem;
+    transition: background 0.3s;
+  }
+  .testimonial:hover { background: #1a1815; }
+  .stars { color: var(--accent); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 2px; }
+  .testimonial-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #c5bfb8;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    font-weight: 300;
+  }
+  .testimonial-author {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,76,31,0.15);
+    border: 0.5px solid rgba(255,76,31,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+  .author-info p:first-child { font-size: 0.85rem; font-weight: 500; }
+  .author-info p:last-child { font-size: 0.78rem; color: var(--muted); }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .plan {
+    background: var(--card-bg);
+    padding: 2.5rem 2rem;
+    transition: background 0.3s;
+    position: relative;
+  }
+  .plan:hover { background: #1a1815; }
+  .plan.popular {
+    background: #150d08;
+    outline: 1.5px solid var(--accent);
+    outline-offset: -1.5px;
+  }
+  .plan-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 1.25rem;
+  }
+  .plan-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+  .plan-desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .plan-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .plan-price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+  .plan-period { font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
+  .plan-features { list-style: none; margin-bottom: 2rem; }
+  .plan-features li {
+    font-size: 0.875rem;
+    color: #a09a93;
+    padding: 0.45rem 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.05);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .plan-features li::before {
+    content: '✓';
+    color: var(--accent);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+  .plan-features li.no { color: var(--muted); }
+  .plan-features li.no::before { content: '—'; color: var(--muted); }
+
+  /* CTA */
+  .cta-section {
+    margin: 0 5% 5rem;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--card-bg);
+    border: 0.5px solid var(--border);
+    padding: 6rem 5%;
+    text-align: center;
+    position: relative;
+  }
+  .cta-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 80% at 50% 50%, rgba(255,76,31,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section > * { position: relative; z-index: 1; }
+  .cta-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    margin-bottom: 1.25rem;
+  }
+  .cta-section p {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    max-width: 420px;
+    margin-left: auto; margin-right: auto;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 5%;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--white); }
+
+  /* ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.7s ease forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.6s; }
+
+  /* VIDEO MOCKUP */
+  .video-stack {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 1;
+  }
+  .video-card {
+    width: 120px;
+    height: 200px;
+    border-radius: 14px;
+    background: var(--card-bg);
+    border: 0.5px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .video-card:nth-child(2) { margin-top: 40px; }
+  .video-card:nth-child(3) { margin-top: -20px; }
+  .video-card-inner {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .video-play {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255,76,31,0.8);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .video-play::after {
+    content: '';
+    border: 6px solid transparent;
+    border-left: 10px solid white;
+    margin-left: 3px;
+  }
+  .video-bar {
+    width: 70%; height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+  }
+  .video-bar.short { width: 50%; }
+
+  @media (max-width: 900px) {
+    .video-stack { display: none; }
+    .features-grid { grid-template-columns: 1fr; }
+    .feature.featured { grid-column: span 1; }
+    nav .nav-links { display: none; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat { border-right: none; }
+  }
+  @media (max-width: 600px) {
+    .stats { grid-template-columns: 1fr; }
+    .hero { padding-top: 8rem; }
+    h1 { font-size: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">vir<span>aly</span></a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#pricing" class="nav-cta">Get started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="badge fade-up">
+      <div class="badge-dot"></div>
+      AI-Powered UGC Videos
+    </div>
+    <h1 class="fade-up delay-1">
+      Turn any<br/>product into<br/><em>viral content</em>
+    </h1>
+    <p class="hero-sub fade-up delay-2">
+      Generate authentic, scroll-stopping UGC video ads with AI creators — no filming, no casting, no waiting. Launch in minutes.
+    </p>
+    <div class="hero-actions fade-up delay-3">
+      <a href="#pricing" class="btn-primary">
+        Start for free
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#how" class="btn-ghost">Watch demo</a>
+    </div>
+  </div>
+
+  <!-- decorative video stack -->
+  <div class="video-stack fade-up delay-4">
+    <div class="video-card">
+      <div class="video-card-inner">
+        <div style="font-size: 2rem;">👟</div>
+        <div class="video-play"></div>
+        <div class="video-bar"></div>
+        <div class="video-bar short"></div>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-card-inner">
+        <div style="font-size: 2rem;">💄</div>
+        <div class="video-play"></div>
+        <div class="video-bar"></div>
+        <div class="video-bar short"></div>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-card-inner">
+        <div style="font-size: 2rem;">📱</div>
+        <div class="video-play"></div>
+        <div class="video-bar"></div>
+        <div class="video-bar short"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos">
+  <p class="logos-label">Trusted by 1,200+ brands</p>
+  <div class="logos-row">
+    <span class="logo-item">LUMÉ</span>
+    <span class="logo-item">DROPZ</span>
+    <span class="logo-item">FORTÉ</span>
+    <span class="logo-item">VIVEX</span>
+    <span class="logo-item">NUVRA</span>
+    <span class="logo-item">BLOKK</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">10<span>x</span></div>
+    <div class="stat-label">Lower cost vs traditional UGC</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">3<span>min</span></div>
+    <div class="stat-label">Average time to first video</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">4.8<span>x</span></div>
+    <div class="stat-label">Higher ROAS vs static ads</div>
+  </div>
+  <div class="stat" style="border-right:none;">
+    <div class="stat-num">50<span>+</span></div>
+    <div class="stat-label">AI creators & video styles</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <p class="section-label">How it works</p>
+  <h2 class="section-title">From product URL<br/>to live ad in 3 steps</h2>
+  <p class="section-sub">No production crew. No influencer negotiations. Just paste your product link and go.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">🔗</div>
+      <h3>Drop your product URL</h3>
+      <p>Paste your product link or upload your assets. Our AI scans and analyzes your product automatically.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">🎭</div>
+      <h3>Pick your AI creator</h3>
+      <p>Choose from 50+ diverse AI personas — each with unique styles, voices, and audience appeal.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">✨</div>
+      <h3>Generate & launch</h3>
+      <p>Get scroll-stopping UGC videos ready to publish on TikTok, Instagram Reels, and YouTube Shorts.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-icon">📈</div>
+      <h3>Iterate with data</h3>
+      <p>Track performance and generate new variations in seconds. Optimize for ROAS with AI insights.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features" style="padding-top:0;">
+  <p class="section-label">Features</p>
+  <h2 class="section-title">Everything you need<br/>to go viral</h2>
+  <p class="section-sub">Built for D2C brands, growth marketers, and agencies who need results fast.</p>
+
+  <div class="features-grid">
+    <div class="feature featured">
+      <h3>50+ AI creators that feel 100% human</h3>
+      <p>Our AI avatars look, speak, and react like real people. From unboxings to tutorials — indistinguishable from authentic UGC.</p>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🎬</span>
+      <h3>Multi-format output</h3>
+      <p>Auto-generate 9:16, 1:1, and 16:9 — optimized for every platform from one script.</p>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🔊</span>
+      <h3>Natural voice cloning</h3>
+      <p>Choose from 80+ AI voices or clone your own. Multilingual support built-in.</p>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🧠</span>
+      <h3>AI script writer</h3>
+      <p>High-converting scripts written by AI trained on thousands of top-performing UGC ads.</p>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">⚡</span>
+      <h3>Bulk generation</h3>
+      <p>Generate 100 ad variations overnight. Test angles, hooks, and CTAs at scale.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" style="padding-top:0;">
+  <p class="section-label">What brands say</p>
+  <h2 class="section-title">Real results,<br/>real fast</h2>
+  <p class="section-sub">Join brands already scaling their growth with AI UGC.</p>
+
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">★ ★ ★ ★ ★</div>
+      <p class="testimonial-text">"We cut our creative production cost by 90% while tripling our ad output. Viraly is the unfair advantage we didn't know we needed."</p>
+      <div class="testimonial-author">
+        <div class="avatar">JK</div>
+        <div class="author-info">
+          <p>Jamie Kim</p>
+          <p>Head of Growth, Lumé Beauty</p>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★ ★ ★ ★ ★</div>
+      <p class="testimonial-text">"3.2x ROAS improvement in the first week. The AI creators look completely real — our customers couldn't even tell the difference."</p>
+      <div class="testimonial-author">
+        <div class="avatar">MR</div>
+        <div class="author-info">
+          <p>Marcus Reid</p>
+          <p>CMO, Dropz Footwear</p>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★ ★ ★ ★ ★</div>
+      <p class="testimonial-text">"We went from 5 ad creatives a month to 200. Viraly is a creative machine that never sleeps, never complains, and always converts."</p>
+      <div class="testimonial-author">
+        <div class="avatar">AS</div>
+        <div class="author-info">
+          <p>Asha Singh</p>
+          <p>Founder, Nuvra Skincare</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing" style="padding-top:0;">
+  <p class="section-label">Pricing</p>
+  <h2 class="section-title">Simple, honest pricing</h2>
+  <p class="section-sub">Start free. Scale as you grow. No hidden fees.</p>
+
+  <div class="pricing-grid">
+    <div class="plan">
+      <p class="plan-name">Starter</p>
+      <p class="plan-desc">Perfect for testing the waters.</p>
+      <p class="plan-price">$0 <span>/mo</span></p>
+      <p class="plan-period">Free forever</p>
+      <ul class="plan-features">
+        <li>5 videos per month</li>
+        <li>10 AI creator styles</li>
+        <li>720p output quality</li>
+        <li>Basic analytics</li>
+        <li class="no">Bulk generation</li>
+        <li class="no">API access</li>
+      </ul>
+      <a href="#" class="btn-ghost" style="width:100%;justify-content:center;">Start free</a>
+    </div>
+
+    <div class="plan popular">
+      <div class="plan-badge">Most popular</div>
+      <p class="plan-name">Growth</p>
+      <p class="plan-desc">For brands scaling their ad performance.</p>
+      <p class="plan-price">$99 <span>/mo</span></p>
+      <p class="plan-period">Billed monthly</p>
+      <ul class="plan-features">
+        <li>100 videos per month</li>
+        <li>50+ AI creator styles</li>
+        <li>4K output quality</li>
+        <li>Advanced analytics</li>
+        <li>Bulk generation</li>
+        <li class="no">API access</li>
+      </ul>
+      <a href="#" class="btn-primary" style="width:100%;justify-content:center;">Get started</a>
+    </div>
+
+    <div class="plan">
+      <p class="plan-name">Agency</p>
+      <p class="plan-desc">For teams and high-volume creators.</p>
+      <p class="plan-price">$299 <span>/mo</span></p>
+      <p class="plan-period">Billed monthly</p>
+      <ul class="plan-features">
+        <li>Unlimited videos</li>
+        <li>All AI creator styles</li>
+        <li>4K output quality</li>
+        <li>White-label exports</li>
+        <li>Bulk generation</li>
+        <li>Full API access</li>
+      </ul>
+      <a href="#" class="btn-ghost" style="width:100%;justify-content:center;">Contact us</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-bg"></div>
+  <p class="section-label">Get started today</p>
+  <h2>Your next viral ad<br/>is 3 minutes away</h2>
+  <p>Join 1,200+ brands already scaling with AI UGC. No credit card required.</p>
+  <a href="#" class="btn-primary">
+    Create your first video free
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo">vir<span>aly</span></a>
+  <p>© 2026 Viraly. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
